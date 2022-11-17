@@ -135,9 +135,9 @@ and now make the build. This may take an hour or two (or four or more) depending
 
 Meanwhile, you can download the CARLA release. **Note: Do NOT build CARLA**, it literally takes hours and isn't really worth it. Just download the release directly from GitHub and go on with your life. You can find [the download links here](https://github.com/carla-simulator/carla/releases/tag/0.9.13). Download _CARLA_0.9.13.tar.gz_ and _AdditionalMaps_0.9.13.tar.gz_, then extract both archives to the same directory using something like
 
->`mkdir -p ~/Downloads/CARLA_0_9_13 && `  
->`tar -xvzf ~/Downloads/CARLA_0.9.13.tar.gz -C ~/Downloads/CARLA_0_9_13 && `  
->`tar -xvzf ~/Downloads/AdditionalMaps_0.9.13.tar.gz -C ~/Downloads/CARLA_0_9_13`
+>`mkdir -p ~/CARLA_0_9_13 && `  
+>`tar -xvzf ~/Downloads/CARLA_0.9.13.tar.gz -C ~/CARLA_0_9_13 && `  
+>`tar -xvzf ~/Downloads/AdditionalMaps_0.9.13.tar.gz -C ~/CARLA_0_9_13`
 
 
 
@@ -153,14 +153,43 @@ And you're finally done! Update (for good measure)
 
 and reboot to start a fresh session. Now navigate to the directory where you extracted the CARLA archives, and try to run CARLA with
 
->`cd ~/Downloads/CARLA_0_9_13 && ./CarlaUE4.sh`
+>`cd ~/CARLA_0_9_13 && ./CarlaUE4.sh`
 
-If everything was done correctly, the default scene should load properly and you can traverse it using your mouse and the WASD keys. If the visualization is [too bright](https://github.com/carla-simulator/carla/issues/5278), you may try to reinstall your _`cuda_drivers`_ to solve this problem (but no promises though).
+If everything was done correctly, the default scene should load properly and you can traverse it using your mouse and the WASD keys. If the visualization is [too bright](https://github.com/carla-simulator/carla/issues/5278), you may try to reinstall your _`cuda_drivers`_ to solve this problem
 
 >`sudo apt-get --reinstall install cuda-drivers`
+
+Alternatively, if you have dual GPUs, CARLA may be launching using the integrated graphics card instead of the high-end card. Solve this by
+
+>`export VK_ICD_FILENAMES="/usr/share/vulkan/icd.d/nvidia_icd.json"`
+
+If this works, remember to add it to your _~/.bashrc_ file (and source the file for this session), so it gets permanently fixed.
 
 ---
 
 # Start developing with CARLA
 
 Now you can start using CARLA! Check the [First steps](https://carla.readthedocs.io/en/0.9.13/core_concepts/) for an introduction to the most important concepts.
+
+You can also try to play around with the manual_control example. To do so, you need to install pygame using pip (and pip3)
+
+>`pip install pygame numpy && pip3 install pygame numpy`
+
+Go to your CARLA installation folder and start the server
+
+>`./CarlaUE4.sh`
+
+Then open a new terminal and run the manual_control example
+
+>`cd ./PythonAPI/examples && ./manual_control.py`
+
+If you get an error that pygame is not installed/found, "reinstall" it also using apt-get
+
+> `sudo apt-get install python-pygame`
+
+Now re-run the manual_control.py script and it should work just fine. Finally, you can change the simulation parameters using the config.py file. For example, change the weather conditions by opening a new terminal in your CARLA installation folder and executing
+
+>`cd ./PythonAPI/util`  
+>`python config.py --weather ClearNight`
+
+to get a beautiful simulation of a clear night. Now you can finally go to sleep while your computer is slowly overheating from running CARLA.
